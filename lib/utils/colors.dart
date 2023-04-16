@@ -7,6 +7,7 @@ class AppColors {
   static const white = Color(0xffffffff);
   static const black = Color(0xff000000);
 
+ // ADD or EDIT EMPLOYEE
   static const textFieldBorder = Color(0xffE5E5E5);
   static const hintText = Color(0xff949C9E);
   static const text = Color(0xff323238);
