@@ -156,9 +156,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     print(nameController.text);
                     if (nameController.text.isNotEmpty &&
                         databaseManager.role.value != '' &&
-                        databaseManager.role.value == '' &&
-                        databaseManager.toDate.value == '' &&
-                        databaseManager.fromDate.value == '') {
+                        databaseManager.role.value != '' &&
+                        databaseManager.toDate.value != '' &&
+                        databaseManager.fromDate.value != '') {
                       await databaseManager.addEmployee(Employee(
                           id: DateTime.now().microsecondsSinceEpoch,
                           name: nameController.text,
