@@ -34,6 +34,8 @@ class _EmployeeTileState extends State<EmployeeTile> {
         direction: DismissDirection.endToStart,
         onDismissed: (_) async {
           await databaseManager.deleteemployee(widget.employee.id!);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Employee Deleted")));
           databaseManager.fetchAllEmployee();
         },
         child: Container(

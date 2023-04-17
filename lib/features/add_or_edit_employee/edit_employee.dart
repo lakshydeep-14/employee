@@ -155,6 +155,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                         role: databaseManager.role.value,
                         toDate: databaseManager.toDate.value,
                         fromDate: databaseManager.fromDate.value));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Employee Updated")));
 
                     Get.offAll(() => EmployeeListScreen());
                   },

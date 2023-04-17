@@ -21,6 +21,7 @@ AppBar customAppBar(String title, {bool delIcon = false, Employee? employee}) {
         GestureDetector(
             onTap: () async {
               await databaseManager.deleteemployee(employee!.id!);
+
               Get.offAll(EmployeeListScreen());
             },
             child: Icon(Icons.delete)),

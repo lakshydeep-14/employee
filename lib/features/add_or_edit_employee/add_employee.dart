@@ -154,17 +154,28 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 CustomButton(
                   onPressed: () async {
                     print(nameController.text);
-                    await databaseManager.addEmployee(Employee(
-                        id: DateTime.now().microsecondsSinceEpoch,
-                        name: nameController.text,
-                        role: databaseManager.role.value,
-                        toDate: databaseManager.toDate.value,
-                        fromDate: databaseManager.fromDate.value));
-                    databaseManager.role.value = '';
-                    databaseManager.fromDate.value = '';
-                    databaseManager.toDate.value = '';
+                    if (nameController.text.isNotEmpty &&
+                        databaseManager.role.value != '' &&
+                        databaseManager.role.value == '' &&
+                        databaseManager.toDate.value == '' &&
+                        databaseManager.fromDate.value == '') {
+                      await databaseManager.addEmployee(Employee(
+                          id: DateTime.now().microsecondsSinceEpoch,
+                          name: nameController.text,
+                          role: databaseManager.role.value,
+                          toDate: databaseManager.toDate.value,
+                          fromDate: databaseManager.fromDate.value));
+                      databaseManager.role.value = '';
+                      databaseManager.fromDate.value = '';
+                      databaseManager.toDate.value = '';
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Employee Added")));
 
-                    Get.offAll(() => EmployeeListScreen());
+                      Get.offAll(() => EmployeeListScreen());
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Fill all fields")));
+                    }
                   },
                   buttonColor: AppColors.primary,
                   buttonText: "Save",
