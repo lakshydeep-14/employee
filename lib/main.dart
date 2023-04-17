@@ -1,8 +1,12 @@
+import 'package:employee/controller/db.dart';
 import 'package:employee/features/employee_list/employee_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+DatabaseManager databaseManager = Get.put(DatabaseManager());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await databaseManager.initDatabase();
   runApp(const MyApp());
 }
 
