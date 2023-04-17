@@ -1,3 +1,4 @@
+import 'package:employee/main.dart';
 import 'package:employee/utils/app_extension.dart';
 
 class RoleScreen extends StatelessWidget {
@@ -17,14 +18,20 @@ class RoleScreen extends StatelessWidget {
   }
 
   Widget _roles(String role) {
-    return Container(
-      color: AppColors.white,
-      margin: const EdgeInsets.only(bottom: 1),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Text(role),
-        ],
+    return GestureDetector(
+      onTap: () {
+        databaseManager.role.value = role;
+        Get.back();
+      },
+      child: Container(
+        color: AppColors.white,
+        margin: const EdgeInsets.only(bottom: 1),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text(role),
+          ],
+        ),
       ),
     );
   }

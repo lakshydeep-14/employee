@@ -1,3 +1,4 @@
+import 'package:employee/main.dart';
 import 'package:employee/utils/app_extension.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -22,43 +23,49 @@ class _CustomTextFieldState extends State<CustomTextField> {
       margin: const EdgeInsets.only(bottom: 25),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       height: 40,
-      child: TextFormField(
-        enabled: widget.enabled,
-        keyboardType: TextInputType.name,
-        decoration: InputDecoration(
-            prefixIcon: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: SvgPicture.asset(
-                widget.icon,
+      child: Obx(
+        () => TextFormField(
+          enabled: widget.enabled,
+          controller: widget.controller,
+          keyboardType: TextInputType.name,
+          decoration: InputDecoration(
+              prefixIcon: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: SvgPicture.asset(
+                  widget.icon,
+                ),
               ),
-            ),
-            fillColor: AppColors.white,
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide:
-                  const BorderSide(width: 1, color: AppColors.textFieldBorder),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide:
-                  const BorderSide(width: 1, color: AppColors.textFieldBorder),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide:
-                  const BorderSide(width: 1, color: AppColors.textFieldBorder),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(4),
-              borderSide:
-                  const BorderSide(width: 1, color: AppColors.textFieldBorder),
-            ),
-            hintText: widget.hint,
-            hintStyle: _hintStyle(),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 10)),
-        style: _hintStyle().copyWith(color: AppColors.text),
+              fillColor: AppColors.white,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                    width: 1, color: AppColors.textFieldBorder),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                    width: 1, color: AppColors.textFieldBorder),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                    width: 1, color: AppColors.textFieldBorder),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+                borderSide: const BorderSide(
+                    width: 1, color: AppColors.textFieldBorder),
+              ),
+              hintText: widget.hint,
+              hintStyle: _hintStyle(),
+              contentPadding: const EdgeInsets.symmetric(vertical: 10)),
+          style: (databaseManager.role.value == '' ||
+                  databaseManager.toDate.value == '' ||
+                  databaseManager.fromDate.value == '')
+              ? _hintStyle().copyWith(color: AppColors.text)
+              : _hintStyle().copyWith(color: AppColors.black),
+        ),
       ),
     );
   }

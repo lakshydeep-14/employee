@@ -1,37 +1,47 @@
 import 'package:employee/features/add_or_edit_employee/components/calender.dart';
 import 'package:employee/features/add_or_edit_employee/components/calender_popup2.dart';
 import 'package:employee/features/add_or_edit_employee/components/text_field.dart';
-import 'package:employee/features/add_or_edit_employee/edit_employee.dart';
 import 'package:employee/features/employee_list/employee_list.dart';
 import 'package:employee/utils/app_extension.dart';
+import 'package:intl/intl.dart';
 
 import '../../controller/db.dart';
 import '../../main.dart';
 import 'components/role.dart';
 
-class AddEmployeeScreen extends StatefulWidget {
-  const AddEmployeeScreen({super.key});
+class EditEmployeeScreen extends StatefulWidget {
+  final Employee employee;
+  const EditEmployeeScreen({super.key, required this.employee});
 
   @override
-  State<AddEmployeeScreen> createState() => _AddEmployeeScreenState();
+  State<EditEmployeeScreen> createState() => _EditEmployeeScreenState();
 }
 
-class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
+class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   TextEditingController nameController = TextEditingController();
+  String? hint, role, toDate, fromDate;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    hint = widget.employee.name;
+    role = widget.employee.role;
+    toDate = widget.employee.toDate;
+    fromDate = widget.employee.fromDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar('Add Employee Details'),
+      appBar: customAppBar('Edit Employee Details',
+          delIcon: true, employee: widget.employee),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 24),
         child: Column(children: [
           CustomTextField(
-              icon: AppImagePath.name,
-              hint: "Employee name",
-              controller: nameController),
+              icon: AppImagePath.name, hint: hint!, controller: nameController),
           GestureDetector(
             onTap: () {
-              FocusScope.of(context).unfocus();
               showModalBottomSheet(
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
@@ -42,15 +52,11 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 builder: (BuildContext context) => const RoleScreen(),
               );
             },
-            child: Obx(
-              () => CustomTextField(
-                  icon: AppImagePath.role,
-                  enabled: false,
-                  hint: databaseManager.role.value == ''
-                      ? "Select role"
-                      : databaseManager.role.value,
-                  controller: TextEditingController()),
-            ),
+            child: CustomTextField(
+                icon: AppImagePath.role,
+                enabled: false,
+                hint: role!,
+                controller: TextEditingController()),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +64,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
               Expanded(
                 child: GestureDetector(
                     onTap: () {
-                      FocusScope.of(context).unfocus();
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -79,16 +84,11 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                             );
                           });
                     },
-                    child: Obx(
-                      () => CustomTextField(
-                          enabled: false,
-                          icon: AppImagePath.date,
-                          hint: databaseManager.fromDate.value == ""
-                              ? "Today"
-                              : dateFormattor(DateTime.parse(
-                                  databaseManager.fromDate.value)),
-                          controller: TextEditingController()),
-                    )),
+                    child: CustomTextField(
+                        enabled: false,
+                        icon: AppImagePath.date,
+                        hint: dateFormattor(DateTime.parse(fromDate!)),
+                        controller: TextEditingController())),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -117,17 +117,13 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                         );
                       });
                 },
-                child: Obx(
-                  () => CustomTextField(
-                      enabled: false,
-                      icon: AppImagePath.date,
-                      hint: databaseManager.toDate.value == "" ||
-                              databaseManager.toDate.value == "noDate"
-                          ? "No Date"
-                          : dateFormattor(
-                              DateTime.parse(databaseManager.toDate.value)),
-                      controller: TextEditingController()),
-                ),
+                child: CustomTextField(
+                    enabled: false,
+                    icon: AppImagePath.date,
+                    hint: toDate == "noDate" || toDate == ''
+                        ? "No Date"
+                        : dateFormattor(DateTime.parse(toDate!)),
+                    controller: TextEditingController()),
               )),
             ],
           ),
@@ -153,16 +149,12 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 ),
                 CustomButton(
                   onPressed: () async {
-                    print(nameController.text);
-                    await databaseManager.addEmployee(Employee(
+                    await databaseManager.updateEmployee(Employee(
                         id: DateTime.now().microsecondsSinceEpoch,
                         name: nameController.text,
                         role: databaseManager.role.value,
                         toDate: databaseManager.toDate.value,
                         fromDate: databaseManager.fromDate.value));
-                    databaseManager.role.value = '';
-                    databaseManager.fromDate.value = '';
-                    databaseManager.toDate.value = '';
 
                     Get.offAll(() => EmployeeListScreen());
                   },
