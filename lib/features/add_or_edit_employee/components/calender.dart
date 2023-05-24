@@ -1,15 +1,24 @@
+import 'dart:ui';
+
 import 'package:employee/main.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../utils/app_extension.dart';
 
-enum DateType { today, nextMonday, nextTuesday, afterOneWeek }
+enum DateType {
+  today,
+  nextMonday,
+  nextTuesday,
+  afterOneWeek
+}
 
 class CalenderPopUp extends StatefulWidget {
-  const CalenderPopUp({super.key});
+  final Function? onTap;
+  const CalenderPopUp({super.key, this.onTap});
 
   @override
-  State<CalenderPopUp> createState() => _CalenderPopUpState();
+  State<CalenderPopUp> createState() =>
+      _CalenderPopUpState();
 }
 
 class _CalenderPopUpState extends State<CalenderPopUp> {
@@ -23,14 +32,16 @@ class _CalenderPopUpState extends State<CalenderPopUp> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 20),
           child: _calendar(),
         ),
         const Divider(
           thickness: 1.5,
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -47,8 +58,11 @@ class _CalenderPopUpState extends State<CalenderPopUp> {
               ),
               CustomButton(
                 onPressed: () {
-                  databaseManager.fromDate.value = _selectedDay.toString();
-                  Get.back();
+                  if (widget.onTap == null) {
+                    databaseManager.fromDate.value =
+                        _selectedDay.toString();
+                    Get.back();
+                  }
                 },
                 buttonColor: AppColors.primary,
                 buttonText: "Save",
@@ -97,38 +111,43 @@ class _CalenderPopUpState extends State<CalenderPopUp> {
                     if (index != DateType.nextMonday) {
                       if (_selectedDay.weekday == 1) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 8));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 8));
                         });
-                      } else if (_selectedDay.weekday == 2) {
+                      } else if (_selectedDay.weekday ==
+                          2) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 7));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 7));
                         });
-                      } else if (_selectedDay.weekday == 3) {
+                      } else if (_selectedDay.weekday ==
+                          3) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 6));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 6));
                         });
-                      } else if (_selectedDay.weekday == 4) {
+                      } else if (_selectedDay.weekday ==
+                          4) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 5));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 5));
                         });
-                      } else if (_selectedDay.weekday == 5) {
+                      } else if (_selectedDay.weekday ==
+                          5) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 4));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 4));
                         });
-                      } else if (_selectedDay.weekday == 6) {
+                      } else if (_selectedDay.weekday ==
+                          6) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 3));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 3));
                         });
                       } else {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 1));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 1));
                         });
                       }
                     }
@@ -154,38 +173,43 @@ class _CalenderPopUpState extends State<CalenderPopUp> {
                     if (index != DateType.nextTuesday) {
                       if (_selectedDay.weekday == 1) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 8));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 8));
                         });
-                      } else if (_selectedDay.weekday == 2) {
+                      } else if (_selectedDay.weekday ==
+                          2) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 7));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 7));
                         });
-                      } else if (_selectedDay.weekday == 3) {
+                      } else if (_selectedDay.weekday ==
+                          3) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 6));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 6));
                         });
-                      } else if (_selectedDay.weekday == 4) {
+                      } else if (_selectedDay.weekday ==
+                          4) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 5));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 5));
                         });
-                      } else if (_selectedDay.weekday == 5) {
+                      } else if (_selectedDay.weekday ==
+                          5) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 4));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 4));
                         });
-                      } else if (_selectedDay.weekday == 6) {
+                      } else if (_selectedDay.weekday ==
+                          6) {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 3));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 3));
                         });
                       } else {
                         setState(() {
-                          _selectedDay =
-                              DateTime.now().add(const Duration(days: 9));
+                          _selectedDay = DateTime.now()
+                              .add(const Duration(days: 9));
                         });
                       }
                     }
@@ -207,17 +231,18 @@ class _CalenderPopUpState extends State<CalenderPopUp> {
                     if (index != DateType.afterOneWeek) {
                       setState(() {
                         index = DateType.afterOneWeek;
-                        _selectedDay =
-                            DateTime.now().add(const Duration(days: 7));
+                        _selectedDay = DateTime.now()
+                            .add(const Duration(days: 7));
                       });
                     }
                   },
                   textColor: index == DateType.afterOneWeek
                       ? AppColors.white
                       : AppColors.primary,
-                  buttonColor: index == DateType.afterOneWeek
-                      ? AppColors.primary
-                      : AppColors.lightButton,
+                  buttonColor:
+                      index == DateType.afterOneWeek
+                          ? AppColors.primary
+                          : AppColors.lightButton,
                   buttonText: 'After 1 week'),
             )
           ],

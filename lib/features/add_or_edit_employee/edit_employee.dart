@@ -11,14 +11,18 @@ import 'components/role.dart';
 
 class EditEmployeeScreen extends StatefulWidget {
   final Employee employee;
-  const EditEmployeeScreen({super.key, required this.employee});
+  const EditEmployeeScreen(
+      {super.key, required this.employee});
 
   @override
-  State<EditEmployeeScreen> createState() => _EditEmployeeScreenState();
+  State<EditEmployeeScreen> createState() =>
+      _EditEmployeeScreenState();
 }
 
-class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
-  TextEditingController nameController = TextEditingController();
+class _EditEmployeeScreenState
+    extends State<EditEmployeeScreen> {
+  TextEditingController nameController =
+      TextEditingController();
   String? hint, role, toDate, fromDate;
   @override
   void initState() {
@@ -27,6 +31,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     hint = widget.employee.name;
     role = widget.employee.role;
     toDate = widget.employee.toDate;
+    databaseManager.role.value =
+        widget.employee.role.toString();
     fromDate = widget.employee.fromDate;
   }
 
@@ -36,10 +42,13 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       appBar: customAppBar('Edit Employee Details',
           delIcon: true, employee: widget.employee),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 24),
+        padding: const EdgeInsets.symmetric(
+            horizontal: 0, vertical: 24),
         child: Column(children: [
           CustomTextField(
-              icon: AppImagePath.name, hint: hint!, controller: nameController),
+              icon: AppImagePath.name,
+              hint: hint!,
+              controller: nameController),
           GestureDetector(
             onTap: () {
               showModalBottomSheet(
@@ -49,90 +58,28 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                   ),
                 ),
                 context: context,
-                builder: (BuildContext context) => const RoleScreen(),
+                builder: (BuildContext context) =>
+                    const RoleScreen(),
               );
             },
-            child: CustomTextField(
-                icon: AppImagePath.role,
-                enabled: false,
-                hint: role!,
-                controller: TextEditingController()),
+            child: Obx(
+              () => CustomTextField(
+                  icon: AppImagePath.role,
+                  enabled: false,
+                  hint: databaseManager.role.value,
+                  controller: TextEditingController()),
+            ),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              contentPadding: EdgeInsets.zero,
-                              titlePadding: EdgeInsets.zero,
-                              buttonPadding: EdgeInsets.zero,
-                              actionsPadding: EdgeInsets.zero,
-                              insetPadding: EdgeInsets.zero,
-                              content: Builder(builder: (context) {
-                                return Container(
-                                    height: 600,
-                                    width: 500,
-                                    margin: EdgeInsets.all(8),
-                                    child: CalenderPopUp());
-                              }),
-                            );
-                          });
-                    },
-                    child: CustomTextField(
-                        enabled: false,
-                        icon: AppImagePath.date,
-                        hint: dateFormattor(DateTime.parse(fromDate!)),
-                        controller: TextEditingController())),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: SvgPicture.asset(AppImagePath.rightArrow),
-              ),
-              Expanded(
-                  child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          contentPadding: EdgeInsets.zero,
-                          titlePadding: EdgeInsets.zero,
-                          buttonPadding: EdgeInsets.zero,
-                          actionsPadding: EdgeInsets.zero,
-                          insetPadding: EdgeInsets.zero,
-                          content: Builder(builder: (context) {
-                            return Container(
-                                height: 600,
-                                width: 500,
-                                margin: EdgeInsets.all(8),
-                                child: CalenderPopUp2());
-                          }),
-                        );
-                      });
-                },
-                child: CustomTextField(
-                    enabled: false,
-                    icon: AppImagePath.date,
-                    hint: toDate == "noDate" || toDate == ''
-                        ? "No Date"
-                        : dateFormattor(DateTime.parse(toDate!)),
-                    controller: TextEditingController()),
-              )),
-            ],
-          ),
+
+          //For Date
+
           const Spacer(),
           const Divider(
             thickness: 1.5,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -149,14 +96,19 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                 ),
                 CustomButton(
                   onPressed: () async {
-                    await databaseManager.updateEmployee(Employee(
-                        id: DateTime.now().microsecondsSinceEpoch,
-                        name: nameController.text,
-                        role: databaseManager.role.value,
-                        toDate: databaseManager.toDate.value,
-                        fromDate: databaseManager.fromDate.value));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Employee Updated")));
+                    await databaseManager.updateEmployee(
+                        Employee(
+                            id: widget.employee.id,
+                            name: nameController.text,
+                            role:
+                                databaseManager.role.value,
+                            toDate: widget.employee.toDate,
+                            fromDate:
+                                widget.employee.fromDate));
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(
+                            content:
+                                Text("Employee Updated")));
 
                     Get.offAll(() => EmployeeListScreen());
                   },

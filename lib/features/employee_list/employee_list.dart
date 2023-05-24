@@ -9,18 +9,22 @@ class EmployeeListScreen extends StatefulWidget {
   const EmployeeListScreen({super.key});
 
   @override
-  State<EmployeeListScreen> createState() => _EmployeeListScreenState();
+  State<EmployeeListScreen> createState() =>
+      _EmployeeListScreenState();
 }
 
-class _EmployeeListScreenState extends State<EmployeeListScreen> {
+class _EmployeeListScreenState
+    extends State<EmployeeListScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
-  Future<List<Employee>> fetchEmployeesFromDatabase() async {
-    Future<List<Employee>> employees = databaseManager.fetchAllEmployee();
+  Future<List<Employee>>
+      fetchEmployeesFromDatabase() async {
+    Future<List<Employee>> employees =
+        databaseManager.readEmployee();
     return employees;
   }
 
@@ -28,23 +32,26 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Employee>>(
-        future: databaseManager.fetchAllEmployee(),
+        future: databaseManager.readEmployee(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (!snapshot.hasData == null || snapshot.data!.isEmpty) {
+            if (!snapshot.hasData == null ||
+                snapshot.data!.isEmpty) {
               return Center(
-                child: SvgPicture.asset('assets/no_employee.svg'),
+                child: SvgPicture.asset(
+                    'assets/no_employee.svg'),
               );
             }
             return ListView(
               children: [
                 if (snapshot.data!
                     .where((element) =>
-                        element.toDate != "noDate" && element.toDate != "")
+                        element.toDate != "noDate" &&
+                        element.toDate != "")
                     .isNotEmpty)
                   const Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 16),
                     child: Text(
                       "Current employees",
                       style: TextStyle(
@@ -55,11 +62,13 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                   ),
                 if (snapshot.data!
                     .where((element) =>
-                        element.toDate != "noDate" && element.toDate != "")
+                        element.toDate != "noDate" &&
+                        element.toDate != "")
                     .isNotEmpty)
                   ListView.builder(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics:
+                          const NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data!
                           .where((element) =>
                               element.toDate != "noDate" &&
@@ -69,18 +78,20 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                       itemBuilder: (context, i) {
                         var data = snapshot.data!
                             .where((element) =>
-                                element.toDate != "noDate" &&
+                                element.toDate !=
+                                    "noDate" &&
                                 element.toDate != "")
                             .toList()[i];
                         return EmployeeTile(employee: data);
                       }),
                 if (snapshot.data!
                     .where((element) =>
-                        element.toDate == "noDate" || element.toDate == "")
+                        element.toDate == "noDate" ||
+                        element.toDate == "")
                     .isNotEmpty)
                   const Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 16),
                     child: Text(
                       "Previous employees",
                       style: TextStyle(
@@ -91,11 +102,13 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                   ),
                 if (snapshot.data!
                     .where((element) =>
-                        element.toDate == "noDate" || element.toDate == "")
+                        element.toDate == "noDate" ||
+                        element.toDate == "")
                     .isNotEmpty)
                   ListView.builder(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics:
+                          const NeverScrollableScrollPhysics(),
                       itemCount: snapshot.data!
                           .where((element) =>
                               element.toDate == "noDate" ||
@@ -105,7 +118,8 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                       itemBuilder: (context, i) {
                         var data = snapshot.data!
                             .where((element) =>
-                                element.toDate == "noDate" ||
+                                element.toDate ==
+                                    "noDate" ||
                                 element.toDate == "")
                             .toList()[i];
                         return EmployeeTile(employee: data);
@@ -121,7 +135,8 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8)),
           child: const Icon(
             Icons.add,
             color: AppColors.white,

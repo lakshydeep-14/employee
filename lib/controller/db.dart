@@ -7,7 +7,12 @@ import 'package:path/path.dart';
 class Employee {
   final int? id;
   final String? name, role, toDate, fromDate;
-  Employee({this.id, this.fromDate, this.name, this.role, this.toDate});
+  Employee(
+      {this.id,
+      this.fromDate,
+      this.name,
+      this.role,
+      this.toDate});
 
   Employee.fromDbMap(Map<String, dynamic> map)
       : id = map['id'],
@@ -15,8 +20,9 @@ class Employee {
         role = map['role'],
         toDate = map['toDate'],
         fromDate = map['fromDate'];
+
   Map<String, dynamic> toDbMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map['id'] = id;
     map['name'] = name;
     map['role'] = role;
@@ -36,8 +42,10 @@ class DatabaseManager extends GetxController {
 
   // Creates and opens the database.
   initDatabase() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, _databaseName);
+    Directory documentsDirectory =
+        await getApplicationDocumentsDirectory();
+    String path =
+        join(documentsDirectory.path, _databaseName);
     _database = await openDatabase(
       path,
       version: 1,
@@ -55,30 +63,33 @@ class DatabaseManager extends GetxController {
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             role TEXT NOT NULL,
-            toDate TEXT,
+            toDate TEXT NOT NULL,
             fromDate TEXT
           )
           ''');
-    print('table created');
   }
-
-  Future<List<Employee>> fetchAllEmployee() async {
+// READ
+  Future<List<Employee>> readEmployee() async {
     Database dbclient = _database;
-    List<Map<String, dynamic>> maps = await dbclient.query('Employee');
+    List<Map<String, dynamic>> maps =
+        await dbclient.query('Employee');
     if (maps.isNotEmpty) {
-      var a = maps.map((map) => Employee.fromDbMap(map)).toList();
+      var a = maps
+          .map((map) => Employee.fromDbMap(map))
+          .toList();
       employee.addAll(a);
       return a;
     }
-
     return [];
   }
 
+// CREATE
   Future<int> addEmployee(Employee employee) async {
     Database dbclient = _database;
     return dbclient.insert(
       'Employee',
       employee.toDbMap(),
+      
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -93,7 +104,7 @@ class DatabaseManager extends GetxController {
       whereArgs: [newemployee.id],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    fetchAllEmployee();
+    readEmployee();
     return a;
   }
 
@@ -104,7 +115,7 @@ class DatabaseManager extends GetxController {
       where: 'id = ?',
       whereArgs: [id],
     );
-    fetchAllEmployee();
+    readEmployee();
     return a;
   }
 }

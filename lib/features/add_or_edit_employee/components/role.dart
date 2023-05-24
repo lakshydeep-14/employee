@@ -8,7 +8,8 @@ class RoleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.white,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
+      child:
+          Column(mainAxisSize: MainAxisSize.min, children: [
         _roles("Product Designer"),
         _roles("Flutter Developer"),
         _roles("QA Tester"),

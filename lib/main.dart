@@ -3,7 +3,8 @@ import 'package:employee/features/employee_list/employee_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-DatabaseManager databaseManager = Get.put(DatabaseManager());
+DatabaseManager databaseManager =
+    Get.put(DatabaseManager());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await databaseManager.initDatabase();
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-        debugShowCheckedModeBanner: false, home: EmployeeListScreen());
+        debugShowCheckedModeBanner: false,
+        home: EmployeeListScreen());
   }
 }
